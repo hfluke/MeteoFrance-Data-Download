@@ -1,0 +1,1 @@
+This is a script to download all snow and wind data hosted by Meteo France. In order to use the program, a valid API key is needed. 
