@@ -1,5 +1,5 @@
 import sys
-from FrenchAPI import main
+from MeteoFrance import main
 
 
 def printMessage():

@@ -1,11 +1,9 @@
 import requests
-from time import sleep
 from MeteoFranceUtil import formatDate
 
 
 # 1. Find the station identifier
 def requestStationsList(token, dept, param, timeRes):
-    sleep(0.1)
     return requests.get(
         url=f"https://public-api.meteofrance.fr/public/DPClim/v1/liste-stations/{timeRes}",
         params={
@@ -18,7 +16,6 @@ def requestStationsList(token, dept, param, timeRes):
 
 # 2. Retrieve station metadata
 def requestStationInformation(token, station):
-    sleep(0.1)
     return requests.get(
         url="https://public-api.meteofrance.fr/public/DPClim/v1/information-station",
         params={
@@ -30,7 +27,6 @@ def requestStationInformation(token, station):
 
 # 3. Ordering data
 def requestStationCommand(token, station, year, timeRes):
-    sleep(0.1)
     return requests.get(
         url=f"https://public-api.meteofrance.fr/public/DPClim/v1/commande-station/{timeRes}",
         params={
@@ -44,7 +40,6 @@ def requestStationCommand(token, station, year, timeRes):
 
 # 4. Retrieve weather data from the station
 def requestFileCommand(token, command):
-    sleep(0.1)
     return requests.get(
         url="https://public-api.meteofrance.fr/public/DPClim/v1/commande/fichier",
         params={
@@ -52,3 +47,7 @@ def requestFileCommand(token, command):
         },
         headers={"apiKey": token}
     )
+
+
+def formatDate(year):
+    return f"{year}-01-01T00:00:00Z"
