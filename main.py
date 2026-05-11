@@ -1,5 +1,5 @@
 import sys
-from MeteoFrance import main
+from src.MeteoFrance import main
 
 
 def printMessage():

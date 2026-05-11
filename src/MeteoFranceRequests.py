@@ -1,5 +1,4 @@
 import requests
-from MeteoFranceUtil import formatDate
 
 
 # 1. Find the station identifier

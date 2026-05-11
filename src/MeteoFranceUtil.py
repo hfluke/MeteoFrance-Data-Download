@@ -1,7 +1,7 @@
 import os
 from time import sleep
 from datetime import datetime
-import MeteoFranceRequests
+import src.MeteoFranceRequests as MeteoFranceRequests
 
 
 def readToken():
