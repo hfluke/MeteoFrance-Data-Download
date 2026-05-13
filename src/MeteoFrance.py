@@ -1,4 +1,5 @@
 import os
+import json
 from time import sleep
 from datetime import datetime
 import src.MeteoFranceUtil as MeteoFranceUtil
@@ -19,6 +20,8 @@ def main(timeRes):
         os.makedirs(f"data")
     if not os.path.exists(f"data/{timeRes}"):
         os.makedirs(f"data/{timeRes}")
+    if not os.path.exists(f"data/{MeteoFranceUtil.getParameter(timeRes)}_station_metadata"):
+        os.makedirs(f"data/{MeteoFranceUtil.getParameter(timeRes)}_station_metadata")
 
     while True:
         try:
@@ -33,6 +36,15 @@ def main(timeRes):
             continue
 
 
+def downloadMetadata(token, timeRes, dept):
+    stationList = MeteoFranceUtil.listStations(token, dept, timeRes)
+    if not stationList:
+        return
+    
+    with open(f"data/{MeteoFranceUtil.getParameter(timeRes)}_station_metadata/dept_{dept:02}.json", "w") as f:
+        json.dump(stationList, f)
+
+
 def downloadData(timeRes):
 
     token = MeteoFranceUtil.readToken()
@@ -40,6 +52,8 @@ def downloadData(timeRes):
     mostRecent = MeteoFranceUtil.getMostRecentFile(timeRes)
     deptIdx = DEPARTMENT_NUMBERS.index(mostRecent["dept"])
     for dept in DEPARTMENT_NUMBERS[deptIdx:]:
+
+        downloadMetadata(token, timeRes, dept)
 
         stationJson = MeteoFranceUtil.listStations(token, dept, timeRes)
         if not stationJson:
@@ -58,7 +72,7 @@ def downloadData(timeRes):
             yearIdx = years.index(mostRecent["year"]) if int(station) == mostRecent["station"] else 0
 
             for year in years[yearIdx:]:
-                
+
                 command = MeteoFranceUtil.stationCommand(token, dept, station, year, timeRes)
                 if not command:
                     continue

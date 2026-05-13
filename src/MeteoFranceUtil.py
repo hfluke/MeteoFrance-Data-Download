@@ -117,17 +117,10 @@ def fileCommand(token, dept, station, year, command, attemptNo=0):
     
 
 def saveFile(fileContent, dept, station, year, timeRes):
-    if timeRes == "daily":
-        field = "snow"
-    elif timeRes == "hourly":
-        field = "wind"
-    else:
-        raise RuntimeError
-    
     if not os.path.exists(f"data/{timeRes}/dept_{dept:02}"):
         os.makedirs(f"data/{timeRes}/dept_{dept:02}")
 
-    with open(f'data/{timeRes}/dept_{dept:02}/FR_{station}_{year}_{field}.csv', 'wb') as f:
+    with open(f'data/{timeRes}/dept_{dept:02}/FR_{station}_{year}_{getParameter(timeRes)}.csv', 'wb') as f:
         f.write(fileContent)
 
 
@@ -138,3 +131,12 @@ def reportError(status, dept, station="na", year="na", edgeDate="na"):
     else:
         with open("errors.txt", "a") as file:
             file.write(f"{status},{dept},{station},{year},{edgeDate}\n")
+
+
+def getParameter(timeRes):
+    if timeRes == "daily":
+        return "snow"
+    elif timeRes == "hourly":
+        return "wind"
+    else:
+        return RuntimeError
